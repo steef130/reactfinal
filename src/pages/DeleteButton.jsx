@@ -16,7 +16,7 @@ export const DeleteButton = () => {
     if (confirmed) {
     axios.delete(`http://localhost:3000/events/${id}`)
       .then(() => {
-        // Update the state or perform any other necessary actions
+        
         console.log(`Event with ID ${id} deleted successfully.`);
       })
       .catch(error => {
