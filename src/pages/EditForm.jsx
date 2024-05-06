@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-
-export const EditForm = ({ match }) => {
-  
+export const EditForm = () => {
+  const { eventId } = useParams();
   const [eventData, setEventData] = useState({
     title: "",
     description: "",
@@ -13,32 +13,54 @@ export const EditForm = ({ match }) => {
     createdBy: "",
     image: "",
   });
-  
-  const eventId = match.params.eventId;
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const response = await fetch(`http://localhost:3000/events/${eventId}`);
-        const eventData = await response.json();
-        setEventData(eventData);
+        if (response.ok) {
+          const eventData = await response.json();
+          setEventData(eventData);
+        } else {
+          console.error("Failed to fetch event data");
+        }
       } catch (error) {
-        console.error("Fout bij het ophalen van evenementsgegevens:", error);
+        console.error("Error fetching event data:", error);
       }
     };
 
     fetchEvent();
   }, [eventId]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    try {
+      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(eventData),
+      });
+  
+      if (response.ok) {
+        const updatedEventData = await response.json();
+        setEventData(updatedEventData);
+        console.log("Event data updated successfully:", updatedEventData);
+      } else {
+        console.error("Failed to update event data");
+      }
+    } catch (error) {
+      console.error("Error updating event data:", error);
+    }
   };
 
   return (
     <div>
-      <h2>Bewerk bericht</h2>
+      <h2>Edit Event</h2>
       <form onSubmit={handleSubmit}>
-        <input
+      <input
           type="text"
           name="title"
           value={eventData.title}
@@ -79,4 +101,3 @@ export const EditForm = ({ match }) => {
     </div>
   );
 };
-
