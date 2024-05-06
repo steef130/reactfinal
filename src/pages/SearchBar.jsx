@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-export const SearchBar = ({ onChance }) => {
+export const SearchBar = ({ onChange }) => {
    const [searchTerm, setSearchTerm] = useState('');
    const [events, setEvents] = useState([]);
    const [categories, setCategories] = useState([]);
@@ -23,12 +23,21 @@ export const SearchBar = ({ onChance }) => {
     fetchData('http://localhost:3000/categories', setCategories);
   }, []);
 
+
   const matchCategories = categories.filter((category) =>
   category.name.includes(searchTerm.toLowerCase()));
 
+
   const matchEvent = events.filter((item) => {
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase())=== item.categoryIds.includes(matchCategories.id);
+    return (
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.categoryIds &&
+        item.categoryIds.some((categoryId) =>
+          matchCategories.some((cat) => cat.id == categoryId)
+        ))
+    );
   });
+ 
     
  
 
@@ -42,7 +51,7 @@ export const SearchBar = ({ onChance }) => {
   };
 
   // Call onSearch with the filtered results
-  onChance({ matchEvent, matchCategories });
+  onChange({ matchEvent, matchCategories });
 
   return (
     <div>
