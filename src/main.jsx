@@ -26,14 +26,18 @@ const router = createBrowserRouter([
         element: <EventPage />,
         loader: EventPageLoader,
         }, 
-          {
-            path: '/edit',
-            element: <EditForm />,
-          },
-          {
-            path: '/delete',
-            element: <DeleteButton />,
-          },
+         {
+        path: '/edit/:eventId',
+        element: <EditForm />,
+        }, 
+       {
+        path: '/delete',
+        element: <DeleteButton />,
+       },
+       {
+        path: '/add',
+        element: <AddNewEvent />,
+       },
         {
           path: '*',
           element: <div>Not Found</div>,
