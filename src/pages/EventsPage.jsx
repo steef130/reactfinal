@@ -1,15 +1,15 @@
 import React from 'react';
-import { Heading, Box } from '@chakra-ui/react';
+import { Heading, Box, Button } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { AddNewEvent } from '../pages/AddNewEvent'; 
+
 
 
 export const EventsPage = () => {
 
   const [events, setEvents] = useState([]);
-  const [eventData, setEventData] = useState([]);
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -25,17 +25,6 @@ export const EventsPage = () => {
   }, []);
  
 
-  const createEvent = async (user) => {
-    
-    // No error handling, normally you would do that.
-    const response = await fetch("http://localhost:3000/events", {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: { "Content-Type": "application/json;charset=utf-8" },
-    });
-    const newEvent = await response.json();
-    setEventData((prevEvents) =>(prevEvents.concat(newEvent)));
-  }; 
 
   return (
     <div>
@@ -66,11 +55,9 @@ export const EventsPage = () => {
       ))}
       
       </Box>
-      <br/>
-      <br/>
-      <br/>
-  
-      <AddNewEvent createEvent={createEvent} />
+      <Link to ="/add">
+      <Button>Add Event</Button>
+      </Link>
      
       
     </div>
