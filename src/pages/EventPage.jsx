@@ -48,14 +48,14 @@ export const EventPage = () => {
       <ul>
       {event.categoryIds.map((categoryId) => (
           <li key={categoryId}>
-            {categoriesData.find((cat) => cat.id == categoryId).name}
+           {categoriesData.find((cat) => cat.id == categoryId)?.name || "Onbekend"}
           </li>
         ))}
       </ul>
    
        by{""}
        <p>
-        {users.find((user) => user.id && event.createdBy).name}
+       {users.find((user) => user.id && event.createdBy)?.name || "Onbekend"}
        </p>
       
        <Link to={`/edit/${event.id}`}>
