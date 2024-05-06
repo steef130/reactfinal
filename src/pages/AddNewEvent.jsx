@@ -1,23 +1,38 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-
-
-export const AddNewEvent = ({ createEvent }) => {
+export const AddNewEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [location, setLocation] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+ const [eventData, setEventData] = useState([]);
+  const createEvent = async (user) => {
+    try {
+      const response = await fetch("http://localhost:3000/events", {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: { "Content-Type": "application/json;charset=utf-8" },
+      });
 
-  
-  const handleSubmit = e => {
+      if (!response.ok) {
+        throw new Error("Er is een fout opgetreden bij het toevoegen van het evenement.");
+      }
+
+      const newEvent = await response.json();
+      setEventData((prevEvents) => prevEvents.concat(newEvent));
+    } catch (error) {
+      console.error("Fout bij het toevoegen van het evenement:", error);
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    // An async function, but no need to wait for it.
+  
     createEvent({ title, description, image, location, startTime, endTime });
 
-    // Empty the form fields.
     setTitle("");
     setDescription("");
     setImage("");
@@ -28,6 +43,8 @@ export const AddNewEvent = ({ createEvent }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Add new event</h2>
+      <label htmlFor="title">Titel:</label>
       <input
         type="text"
         required="required"
@@ -57,20 +74,20 @@ export const AddNewEvent = ({ createEvent }) => {
         value={location}
       />
        <input
-        type="text"
+        type="time"
         required="required"
         placeholder="startTime"
         onChange={e => setStartTime(e.target.value)}
         value={startTime}
       />
        <input
-        type="text"
+        type="time"
         required="required"
         placeholder="endTime"
         onChange={e => setEndTime(e.target.value)}
         value={endTime}
       />
-      <button type="submit">Add event</button>
+     <button type="button" onClick={handleSubmit}>Evenement toevoegen</button>
     </form>
   );
 };
