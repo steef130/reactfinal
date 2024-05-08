@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Box, Button } from '@chakra-ui/react';
+import { Heading, Box, Button, Input } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -9,39 +9,76 @@ import { useState } from 'react';
 export const EventsPage = () => {
 
   const [events, setEvents] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const fetchData = async (url, setData) => {
       try {
-        const response = await fetch('http://localhost:3000/events');
-        const eventData = await response.json();
-      setEvents(eventData);
+        const response = await fetch(url);
+        const data = await response.json();
+        setData(data);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching data:', error);
       }
     };
-    fetchEvents();
-  }, []);
- 
 
+    fetchData('http://localhost:3000/events', setEvents);
+    fetchData('http://localhost:3000/categories', setCategories);
+  }, []);
+
+
+  const matchCategories = categories.filter((category) =>
+  category.name.includes(searchTerm.toLowerCase()));
+
+
+  const filteredEvents = events.filter((item) => {
+    return (
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.categoryIds &&
+        item.categoryIds.some((categoryId) =>
+          matchCategories.some((cat) => cat.id == categoryId)
+        ))
+    );
+  });
+  const handleSearchChange = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+  
+    const filteredEvents = events.filter((item) => {
+      return (
+        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.categoryIds &&
+          item.categoryIds.some((categoryId) =>
+            matchCategories.some((cat) => cat.id == categoryId)
+          ))
+      );
+    });
+  
+    // Call onSearch with the filtered results
+    onSearch(filteredEvents);
+  };
+  
 
   return (
-    <div>
+    <div style={{ background: 'teal.400', minHeight: '100vh' }}>
+      <Box bg="teal.500" p={4} color="white">
       <Heading>List of events</Heading>
+      <Input
+        placeholder="Search events..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      </Box>
    
-      <Box className="event-list"
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          display: 'flex',
-          flexDirection: 'row',
-          cursor: 'pointer'
-        }}>;
+      <Box mt={4}
+        display="flex"
+        flexDirection="row"
        
-         {events.map((event) => (
+      >
+      
+       
+       {filteredEvents.map((event) => (
            <Link key={event.id} to={`/event/${event.id}`}>
         <li key={event.id}>
           
@@ -55,9 +92,11 @@ export const EventsPage = () => {
       ))}
       
       </Box>
+      <Box backgroundColor="teal.600">
       <Link to ="/add">
-      <Button>Add Event</Button>
+      <Button backgroundColor={"green.800"} color="white">Add Event</Button>
       </Link>
+      </Box>
      
       
     </div>
