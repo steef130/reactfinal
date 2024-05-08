@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Box, Input, Button } from "@chakra-ui/react";
 export const AddNewEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -42,52 +42,58 @@ export const AddNewEvent = () => {
   };
 
   return (
+    <Box
+      className="add-event"
+      flexDirection={"column"}
+      backgroundColor={"teal.300"}>
     <form onSubmit={handleSubmit}>
+      
       <h2>Add new event</h2>
       <label htmlFor="title">Titel:</label>
-      <input
+      <Input
         type="text"
         required="required"
         placeholder="name"
         onChange={e => setTitle(e.target.value)}
         value={title}
       />
-      <input
+      <Input
         type="text"
         required="required"
         placeholder="description"
         onChange={e => setDescription(e.target.value)}
         value={description}
       />
-      <input
+      <Input
         type="url"
         required="required"
         placeholder="image"
         onChange={e => setImage(e.target.value)}
         value={image}
       />
-       <input
+       <Input
         type="text"
         required="required"
         placeholder="location"
         onChange={e => setLocation(e.target.value)}
         value={location}
       />
-       <input
+       <Input
         type="time"
         required="required"
         placeholder="startTime"
         onChange={e => setStartTime(e.target.value)}
         value={startTime}
       />
-       <input
+       <Input
         type="time"
         required="required"
         placeholder="endTime"
         onChange={e => setEndTime(e.target.value)}
         value={endTime}
       />
-     <button type="button" onClick={handleSubmit}>Evenement toevoegen</button>
+     <Button type="button" onClick={handleSubmit} backgroundColor="teal.600" color="white">Evenement toevoegen</Button>
     </form>
+    </Box>
   );
 };
