@@ -7,7 +7,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/Root';
 import { EditForm } from './pages/EditForm';
 import { DeleteButton } from './pages/DeleteButton';
-//import { EventReactionForm } from './pages/EventReactionForm';
+import { AddNewEvent } from './pages/AddNewEvent';
+
 
 
 
