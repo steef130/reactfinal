@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Button } from '@chakra-ui/react';
+
 
 export const DeleteButton = () => {
   const [events, setEvents] = useState([]);
@@ -26,15 +28,16 @@ export const DeleteButton = () => {
   };
 
   return (
-    <div>
+    <Box
+    backgroundColor={"teal.300"}>
       <h1>Event List</h1>
       {events.map(event => (
         <div key={event.id}>
           <p>{event.title} {event.number}</p>
-          <button onClick={() => handleDelete(event.id)}>Delete</button>
+          <Button onClick={() => handleDelete(event.id)} colorScheme="red">Delete</Button>
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 
