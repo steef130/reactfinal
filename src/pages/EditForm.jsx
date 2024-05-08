@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Box, Input, Button } from '@chakra-ui/react';
 
 export const EditForm = () => {
   const { eventId } = useParams();
@@ -57,47 +58,54 @@ export const EditForm = () => {
   };
 
   return (
-    <div>
+    <Box background="teal.400">
       <h2>Edit Event</h2>
       <form onSubmit={handleSubmit}>
-      <input
+      <Input
           type="text"
           name="title"
           value={eventData.title}
           onChange={e => setEventData({ ...eventData, title: e.target.value })}
           placeholder="Titel"
         />
-         <input
+         <Input
           type="text"
           name="description"
           value={eventData.description}
           onChange={e => setEventData({ ...eventData, description: e.target.value })}
           placeholder="Omschrijving"
         />
-         <input
+         <Input
+          type="text"
+          name="desimage"
+          value={eventData.image}
+          onChange={e => setEventData({ ...eventData, image: e.target.value })}
+          placeholder="Afbeelding"
+        />
+         <Input
           type="text"
           name="location"
           value={eventData.location}
           onChange={e => setEventData({ ...eventData, location: e.target.value })}
           placeholder="Locatie"
         />
-         <input
-          type="text"
+         <Input
+          type="time"
           name="startTime"
           value={eventData.startTime}
           onChange={e => setEventData({ ...eventData, startTime: e.target.value })}
           placeholder="Starttijd"
         />
-         <input
-          type="text"
+         <Input
+          type="time"
           name="endTime"
           value={eventData.endTime}
           onChange={e => setEventData({ ...eventData, endTime: e.target.value })}
           placeholder="Eindtijd"
         />
         
-        <button type="submit">Opslaan</button>
+        <Button type="submit" backgroundColor={"teal.600"} color="white">Opslaan</Button>
       </form>
-    </div>
+    </Box>
   );
 };
