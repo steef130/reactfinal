@@ -1,8 +1,8 @@
 import React from 'react';
-import { Heading, Button } from '@chakra-ui/react';
+import { Heading, Button, Box } from '@chakra-ui/react';
 import { useLoaderData, Link  } from 'react-router-dom';
 
-//import { EventReactionForm } from '../pages/EventReactionForm';
+
 
 
 
@@ -34,7 +34,9 @@ export const EventPage = () => {
 
   return (
  
-    <div className="event">
+    <Box className="event"
+    backgroundColor="teal.300"
+    >
 
       <Heading>Event {event.title} </Heading>
       <img src={event.image} alt={event.title} />
@@ -43,29 +45,30 @@ export const EventPage = () => {
     
       <p>When: {event.startTime}</p>
       <p>Till: {event.endTime}</p>
-     {/* Display category names */}
-     <h3>Categories:</h3>
-      <ul>
-      {event.categoryIds.map((categoryId) => (
-          <li key={categoryId}>
-           {categoriesData.find((cat) => cat.id == categoryId)?.name || "Onbekend"}
-          </li>
-        ))}
-      </ul>
    
-       by{""}
-       <p>
-       {users.find((user) => user.id && event.createdBy)?.name || "Onbekend"}
-       </p>
+     <h3>Categories:</h3>
+     {event && event.categoryIds && (
+  <ul>
+    {event.categoryIds.map((categoryId) => (
+      <li key={categoryId}>
+        {categoriesData.find((cat) => cat.id == categoryId)?.name || "Onbekend"}
+      </li>
+    ))}
+  </ul>
+     )}
+   
+       by{""}  
+  <p>{users.find((user) => user.id && event.createdBy)?.name || "Onbekend"}</p>
+
       
-       <Link to={`/edit/${event.id}`}>
-        <Button>Edit Event</Button>
+  <Link to={`/edit/${event.id}`}>
+        <Button backgroundColor={"green.800"} color="white">Edit Event</Button>
       </Link>
    
-       <Link to ="/delete">
-     <Button>Delete Event</Button>
+      <Link to ="/delete">
+     <Button backgroundColor={"red.800"} color="white">Delete Event</Button>
      </Link>
-    </div>
+    </Box>
     
   );
 };
